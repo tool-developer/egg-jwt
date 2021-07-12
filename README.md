@@ -45,6 +45,13 @@ exports.jwt = {
 ```js
 // {app_root}/config/config.default.js
 exports.jwt = {
+  debug, // 
+  secret, //
+  sign:{}, //
+  verify:{}, //
+  decode:{}, //
+  auth:{}, //
+  verifySecret, //
 };
 ```
 

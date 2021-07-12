@@ -12,7 +12,10 @@
     "jwt",
     "egg-jwt"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "assert": "^2.0.0",
+    "jsonwebtoken": "^8.5.1"
+  },
   "devDependencies": {
     "autod": "^3.0.1",
     "autod-egg": "^1.1.0",
