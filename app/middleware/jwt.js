@@ -160,11 +160,11 @@ module.exports = options => {
       //
       const secretSet = genVerifySecretSet(
         options.secret,
-        ctx.state && ctx.state ? ctx.state.secret : void 0)
+        ctx.state && ctx.state ? ctx.state[options.contextStateSecret || 'secret'] : void 0)
       //
       const decoded = validateToken(ctx.app.jwt, token, secretSet, options);
       //
-      ctx.state.user = decoded;
+      ctx.state[options.contextStateUser || 'user'] = decoded;
     } catch (e) {
       //
       const { passthrough } = options.authOptions || {};

@@ -1,6 +1,6 @@
 {
   "name": "@tool-developer/egg-jwt",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "jwt plugin for egg",
   "eggPlugin": {
     "name": "jwt"
@@ -9,8 +9,13 @@
     "egg",
     "eggPlugin",
     "egg-plugin",
+    "egg-jwt",
+    "egg-auth",
+    "egg-authorizate",
+    "egg-authorization",
+    "egg-token",
     "jwt",
-    "egg-jwt"
+    "authorization"
   ],
   "dependencies": {
     "assert": "^2.0.0",
@@ -56,5 +61,8 @@
   },
   "homepage": "https://github.com/tool-developer/egg-jwt#readme",
   "author": "tool-developer",
+  "publishConfig": {
+    "access": "public"
+  },
   "license": "MIT"
 }
