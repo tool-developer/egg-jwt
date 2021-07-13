@@ -19,10 +19,10 @@ const resolveFromAuthorizationHeader = (authorization,prefix) => {
 
   return ''
 }
-const resolveFromCookies = (cookies, cookieKey) => {
+const resolveFromCookies = (cookies, cookieTokenSet) => {
   //
-  const token = cookieKey && cookieKey.length > 0
-    ? cookies.get(cookieKey)
+  const token = cookieTokenSet && cookieTokenSet.length > 0
+    ? cookies.get(cookieTokenSet)
     : ''
   //
   return (token || '').trim();
@@ -30,15 +30,15 @@ const resolveFromCookies = (cookies, cookieKey) => {
 //
 const resolveToken = (ctx, options = {}) => {
   // 从cookie中获取
-  let token = resolveFromCookies(ctx.cookies,options.cookieKey)
+  let token = resolveFromCookies(ctx.cookies,options.cookieTokenSet)
   //
   if (!token) {
     // 
-    let authorization = (ctx.header && (ctx.header[options.headerAuthorizationKey]  || ctx.header.authorization) || '').trim();
+    let authorization = (ctx.header && (ctx.header[options.headerAuthorization]  || ctx.header.authorization) || '').trim();
     //
     if (authorization) {
       // 从header中获取
-      token = resolveFromAuthorizationHeader(authorization,options.headerAuthorizationSchemePfefix)
+      token = resolveFromAuthorizationHeader(authorization,options.headerAuthorizationScheme)
     } else {
       //
       token = ''
@@ -69,7 +69,7 @@ const parseSecret = (input) => {
 }
 
 //
-const genVerifySecretSet = (signSecret, verifySecret, ctxSecret) => {
+const genVerifySecretSet = (signSecret, ctxSecret) => {
   //
   if ((typeof ctxSecret === 'string' || Buffer.isBuffer(ctxSecret)) && ctxSecret) {
     //
@@ -77,14 +77,13 @@ const genVerifySecretSet = (signSecret, verifySecret, ctxSecret) => {
   }
   //
   const signSet = parseSecret(signSecret)
-  const verifySet = parseSecret(verifySecret)
-  const ret = new Set([...verifySet, ...signSet])
+  const ret = new Set([...signSet])
   //
   return ret
 }
 
 //
-const validateToken = (jwt, token, secretSet, config) => {
+const validateToken = (jwt, token, secretSet, options) => {
   if (!secretSet.size) {
     //
     throw new Error(JwtMsg.VSceretInvalid)
@@ -93,13 +92,13 @@ const validateToken = (jwt, token, secretSet, config) => {
     //
     throw new TypeError(JwtMsg.VerifyNotFunc)
   }
-
+  //
   let ret = null;
   const msgs = [];
   //
   Array.from(secretSet).some((secret) => {
     try {
-      ret = jwt.verify(token, secret, config.verify)
+      ret = jwt.verify(token, secret, options.verifyOptions)
       //
       return true
     }
@@ -161,7 +160,6 @@ module.exports = options => {
       //
       const secretSet = genVerifySecretSet(
         options.secret,
-        options.verifySecret,
         ctx.state && ctx.state ? ctx.state.secret : void 0)
       //
       const decoded = validateToken(ctx.app.jwt, token, secretSet, options);
@@ -169,8 +167,8 @@ module.exports = options => {
       ctx.state.user = decoded;
     } catch (e) {
       //
-      const { passthrough } = options.auth || {};
-      const headerPassthrough = ctx.header[options.headerPassthroughKey] || ctx.header['x-custom-passthrough'];
+      const { passthrough } = options.authOptions || {};
+      const headerPassthrough = ctx.header[options.headerPassthroughSet] || ctx.header['x-custom-passthrough'];
       const pass = headerPassthrough !== undefined ? headerPassthrough : await parseByPassthrough(ctx, passthrough);
       // 返回json数据
       if (pass === true) {
@@ -184,9 +182,9 @@ module.exports = options => {
       }else if(typeof pass === 'string' && pass.length > 0){
         // 进入指定页面
         return ctx.redirect(pass)
-      }else if(options.signPageView){
+      }else if(options.signPageRoutePath){
         // 进入登录页面
-        return ctx.redirect(options.signPageView)
+        return ctx.redirect(options.signPageRoutePath)
       }else{
         const msg = debug === true ? e.message : JwtMsg.AuthFailed
         // 抛出异常

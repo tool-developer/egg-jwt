@@ -7,19 +7,22 @@
  */
 exports.jwt = {
   secret:'',
-  enable:false,
-  cookieKey:'token',
-  headerAuthorizationKey:'authorization',
-  headerAuthorizationSchemePfefix:'Bearer',
+  enableMiddleware:false,
   //
-  headerPassthroughKey:'x-custom-passthrough',
+  cookieTokenSet:'auth-token',
+  //
+  headerAuthorization:'authorization',
+  headerAuthorizationScheme:'Bearer',
+  headerPassthroughSet:'x-custom-passthrough',
 
-  //
-  signPageView:'',
-  auth:{
+  // 登录注册页路由
+  signPageRoutePath:'',
+  authOptions:{
     // passthrough
   },
   //
-  verifySecret:'',
-  verify:{},//
+  verifyOptions:{},//jwt.verify options
+  signOptions:{// jwt.sign options
+    expiresIn:'2d'
+  }
 };

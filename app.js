@@ -4,27 +4,28 @@ const {PLUGIN_NAME} = require('./app.config');
 //
 module.exports = app => {
   //
-  const config = app.config[PLUGIN_NAME];
-  const { enable } = config || {};
+  const config = app.config || {};
+  const options = config[PLUGIN_NAME] || {};
+  const { enableMiddleware } = options;
   //
-  if(enable){
+  if(enableMiddleware){
     //
-    const { appMiddlewareIndex = 0 } = config || {};
+    const { appMiddlewareIndex = 0 } = options;
     assert(typeof appMiddlewareIndex === 'number');
     assert.strictEqual(
-      (app.config.appMiddleware).includes(PLUGIN_NAME),
+      (config.appMiddleware).includes(PLUGIN_NAME),
       false,
       `Duplication of middleware name found: ${PLUGIN_NAME}. Rename your middleware other than "${PLUGIN_NAME}".`,
     );
-    assert(Array.isArray(app.config.appMiddleware));
+    assert(Array.isArray(config.appMiddleware));
     //
     if (appMiddlewareIndex >= 0) {
       //
-      app.config.appMiddleware.splice(appMiddlewareIndex, 0, PLUGIN_NAME)
+      config.appMiddleware.splice(appMiddlewareIndex, 0, PLUGIN_NAME)
     }
     else {
       //
-      app.config.appMiddleware.push(PLUGIN_NAME)
+      config.appMiddleware.push(PLUGIN_NAME)
     }
   }
 }

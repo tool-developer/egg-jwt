@@ -16,14 +16,14 @@ module.exports = {
       this[JWT] = {};
       this[JWT].sign = (payload, secretOrPrivateKey, options) => {
         const secret = secretOrPrivateKey || config.secret;
-        const opts = options ? { ...config.sign, ...options } : { ...config.sign };
+        const opts = options ? { ...config.signOptions, ...options } : { ...config.signOptions };
         //
         return jwt.sign(payload, secret, opts);
       }
       //
       this[JWT].verify = (token, secretOrPrivateKey, options) => {
         const secret = secretOrPrivateKey || config.secret;
-        const opts = options ? { ...config.verify, ...options } : { ...config.verify };
+        const opts = options ? { ...config.verifyOptions, ...options } : { ...config.verifyOptions };
         //
         return jwt.verify(token, secret, opts);
       }
