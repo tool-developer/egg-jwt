@@ -47,5 +47,5 @@ exports.jwt = {
   // jwt.verify方法调用options参数配置
   verifyOptions:{},
   // ignore route path
-  ignore:[]
+  ignore:[],
 };

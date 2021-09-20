@@ -1,6 +1,6 @@
 {
   "name": "@tool-developer/egg-jwt",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "jwt plugin for egg",
   "eggPlugin": {
     "name": "jwt"
@@ -60,7 +60,7 @@
     "url": "https://github.com/tool-developer/egg-jwt/issue"
   },
   "homepage": "https://github.com/tool-developer/egg-jwt#readme",
-  "author": "tool-developer",
+  "author": "@tool-developer",
   "publishConfig": {
     "access": "public"
   },
