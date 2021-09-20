@@ -1,6 +1,6 @@
 {
   "name": "@tool-developer/egg-jwt",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "jwt plugin for egg",
   "eggPlugin": {
     "name": "jwt"

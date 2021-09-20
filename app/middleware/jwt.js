@@ -186,7 +186,7 @@ module.exports = options => {
         // 进入登录页面
         return ctx.redirect(options.signPageRoutePath)
       }else{
-        const msg = debug === true ? e.message : JwtMsg.AuthFailed
+        const msg = options.debug === true ? e.message : JwtMsg.AuthFailed
         // 抛出异常
         return ctx.throw(401, msg, { originalError:e })
       }
